@@ -40,7 +40,7 @@ To run this project, you need to set up a multi-module Maven project in your pre
 
 1.  **Clone the Repository:**
     ```bash
-    git clone https://github.com/awkward-student/load-balancer.git
+    git clone https://github.com/vishwasio/load-balancer.git
     cd load-balancer
     ```
 
@@ -55,4 +55,4 @@ To run this project, you need to set up a multi-module Maven project in your pre
 
 ## Author
 
-* **awkward-student** - [GitHub Profile](https://github.com/awkward-student)
+* **vishwasio** - [GitHub Profile](https://github.com/vishwasio)
