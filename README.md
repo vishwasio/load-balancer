@@ -63,7 +63,7 @@ The system is composed of five distinct applications that work together seamless
 
 This project's load balancer uses a **Least Connections** algorithm. Unlike a simple round-robin approach that sends requests sequentially, this algorithm is intelligent and adaptive.
 
-It works by tracking the number of active connections to each backend service. When a new request arrives, the load balancer checks each service's connection count and forwards the request to the [...]
+It works by tracking the number of active connections to each backend service. When a new request arrives, the load balancer checks each service's connection count and forwards the request to the service with the least number of active connections.
 
 ---
 
