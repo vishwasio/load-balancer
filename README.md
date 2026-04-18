@@ -4,7 +4,7 @@
 
 ## Project Overview
 
-This project is a deep dive into the brain of a distributed system: the **load balancer**. It showcases a powerful service architecture where a central hub intelligently manages traffic to prevent system overload and ensure peak performance. By exploring this project, you will see how service discovery and a smart **least connections** algorithm work together to create a resilient and highly available system. This is where requests meet their perfect destination.
+This project is a deep dive into the brain of a distributed system: the **load balancer**. It showcases a powerful service architecture where a central hub intelligently manages traffic to prevent [...]
 
 ---
 
@@ -12,10 +12,50 @@ This project is a deep dive into the brain of a distributed system: the **load b
 
 The system is composed of five distinct applications that work together seamlessly to demonstrate the principles of service discovery and load balancing.
 
-* **Load Balancer (Port 9000):** The entry point for all requests. It dynamically retrieves the list of available services from the registry and forwards requests based on the **Least Connections** strategy.
+* **Load Balancer (Port 9000):** The entry point for all requests. It dynamically retrieves the list of available services from the registry and forwards requests based on the **Least Connections*[...]
 * **Service Registry (Port 9004):** A central registry where all backend services automatically register themselves, acting as the single source of truth for the load balancer.
 * **Backend Services (3 instances):** Simple RESTful services running on ports 9001, 9002, and 9003. They handle incoming requests and represent the core business logic.
 * **Test Client:** A simple application that generates **100 concurrent requests** to fully test the load balancer's performance under load.
+
+---
+
+## Event Flow Diagram
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                       TEST CLIENT                              │
+│                  (100 Concurrent Requests)                     │
+└────────────────────────┬────────────────────────────────────────┘
+                         │
+                         │ HTTP Requests
+                         ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                    LOAD BALANCER (Port 9000)                   │
+│                                                                 │
+│  1. Query Service Registry for available services             │
+│  2. Apply Least Connections Algorithm                         │
+│  3. Route request to service with fewest active connections   │
+└────────────────────────┬────────────────────────────────────────┘
+         │               │               │
+         │ Route         │ Route         │ Route
+         ▼               ▼               ▼
+    ┌─────────┐     ┌─────────┐     ┌─────────┐
+    │Service 1│     │Service 2│     │Service 3│
+    │Port 9001│     │Port 9002│     │Port 9003│
+    └────┬────┘     └────┬────┘     └────┬────┘
+         │               │               │
+         │ Register      │ Register      │ Register
+         │ Heartbeat     │ Heartbeat     │ Heartbeat
+         └───────┬───────┴───────┬───────┘
+                 │               │
+                 ▼               ▼
+        ┌──────────────────────────────┐
+        │  SERVICE REGISTRY (Port 9004) │
+        │  - Service Instances         │
+        │  - Health Status             │
+        │  - Connection Counts         │
+        └──────────────────────────────┘
+```
 
 ---
 
@@ -23,7 +63,7 @@ The system is composed of five distinct applications that work together seamless
 
 This project's load balancer uses a **Least Connections** algorithm. Unlike a simple round-robin approach that sends requests sequentially, this algorithm is intelligent and adaptive.
 
-It works by tracking the number of active connections to each backend service. When a new request arrives, the load balancer checks each service's connection count and forwards the request to the one with the **fewest active connections**. This ensures that the workload is always balanced, preventing any single service from becoming a bottleneck and maximizing overall system throughput.
+It works by tracking the number of active connections to each backend service. When a new request arrives, the load balancer checks each service's connection count and forwards the request to the [...]
 
 ---
 
